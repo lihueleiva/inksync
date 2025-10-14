@@ -1,0 +1,28 @@
+<section class="gallery-wrapper">
+  <h2 class="section-title">Mi Trabajo</h2>
+
+  <div class="filter-buttons">
+    @for (category of categories(); track category) {
+      <button
+        mat-stroked-button
+        [class.active]="category === activeFilter()"
+        (click)="setFilter(category)">
+        {{ category }}
+      </button>
+    }
+  </div>
+
+  <div class="gallery-grid">
+    @for (tattoo of filteredTattoos(); track tattoo.id) {
+      <div class="gallery-item">
+        <img [src]="tattoo.imageUrl" [alt]="tattoo.description">
+        <div class="item-overlay">
+          <p>{{ tattoo.description }}</p>
+          <button mat-icon-button>
+            <mat-icon>zoom_in</mat-icon>
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</section>
