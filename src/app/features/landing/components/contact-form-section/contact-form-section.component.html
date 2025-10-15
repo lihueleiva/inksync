@@ -1,0 +1,62 @@
+<section class="contact-wrapper">
+  <div class="contact-container">
+    <h2 class="section-title">Cuéntame tu Idea</h2>
+    <p class="section-subtitle">Completa el formulario para recibir una cotización personalizada.</p>
+
+    <form [formGroup]="inquiryForm" (ngSubmit)="onSubmit()" class="inquiry-form" novalidate>
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre Completo</mat-label>
+          <input matInput formControlName="name" required>
+          <mat-error *ngIf="inquiryForm.get('name')?.hasError('required')">El nombre es requerido.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email" required>
+          <mat-error *ngIf="inquiryForm.get('email')?.hasError('required')">El email es requerido.</mat-error>
+          <mat-error *ngIf="inquiryForm.get('email')?.hasError('email')">Ingresa un email válido.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Teléfono / WhatsApp (Opcional)</mat-label>
+        <input matInput formControlName="phone" type="tel">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Describe tu idea (mín. 20 caracteres)</mat-label>
+        <textarea matInput formControlName="idea" rows="5" required></textarea>
+        <mat-error *ngIf="inquiryForm.get('idea')?.hasError('required')">La descripción es requerida.</mat-error>
+        <mat-error *ngIf="inquiryForm.get('idea')?.hasError('minlength')">La descripción es muy corta.</mat-error>
+      </mat-form-field>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Parte del Cuerpo</mat-label>
+          <mat-select formControlName="bodyPart" required>
+            <mat-option *ngFor="let part of bodyParts" [value]="part">{{part}}</mat-option>
+          </mat-select>
+          <mat-error>Selecciona una parte del cuerpo.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Tamaño Aproximado (en cm)</mat-label>
+          <input matInput formControlName="size" required>
+          <mat-error>El tamaño es requerido.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="file-input-container">
+        <button mat-stroked-button type="button" (click)="fileInput.click()">
+          <mat-icon>attach_file</mat-icon>
+          Adjuntar Imágenes de Referencia
+        </button>
+        <input hidden type="file" #fileInput (change)="onFileSelected($event)">
+        <span class="file-name" *ngIf="fileName">{{ fileName }}</span>
+      </div>
+
+      <button mat-flat-button color="primary" type="submit" [disabled]="inquiryForm.invalid" class="submit-button">
+        Enviar Consulta
+      </button>
+    </form>
+  </div>
+</section>
