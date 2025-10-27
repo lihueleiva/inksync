@@ -54,9 +54,13 @@
         <span class="file-name" *ngIf="fileName">{{ fileName }}</span>
       </div>
 
-      <button mat-flat-button color="primary" type="submit" [disabled]="inquiryForm.invalid" class="submit-button">
-        Enviar Consulta
-      </button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="inquiryForm.invalid || isLoading()" class="submit-button">
+  @if (isLoading()) {
+    <mat-spinner [diameter]="24"></mat-spinner>
+  } @else {
+    <span>Enviar Consulta</span>
+  }
+</button>
     </form>
   </div>
 </section>

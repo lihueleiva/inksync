@@ -4,6 +4,61 @@
   color: #f0f0f0;
   padding: 5rem 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  ::ng-deep {
+
+    .mdc-text-field--outlined {
+      .mdc-notched-outline__outline {
+        border-color: rgba(255, 255, 255, 0.3) !important;
+      }
+
+      .mdc-floating-label {
+        color: #b3b3b3 !important;
+      }
+    }
+
+    .mdc-text-field__input {
+      color: #f0f0f0 !important;
+      caret-color: #f0f0f0 !important;
+    }
+
+    .mdc-text-field--outlined:not(.mdc-text-field--disabled):hover {
+      .mdc-notched-outline__outline {
+        border-color: #ffffff !important;
+      }
+
+      .mdc-floating-label {
+        color: #ffffff !important;
+      }
+    }
+
+    .mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused {
+      .mdc-notched-outline__outline {
+        border-color: #673ab7 !important;
+      }
+
+      .mdc-floating-label {
+        color: #673ab7 !important;
+      }
+    }
+
+    .mat-mdc-select-value {
+      color: #f0f0f0 !important;
+    }
+
+    .mat-mdc-select-panel {
+      background: #2a2a2a !important;
+    }
+
+    .mat-mdc-option {
+      color: #f0f0f0 !important;
+
+      &:hover:not(.mdc-list-item--disabled),
+      &.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+        background: rgba(255, 255, 255, 0.1) !important;
+      }
+    }
+  }
 }
 
 .contact-container {
@@ -29,14 +84,6 @@
   flex-direction: column;
   gap: 1rem;
   text-align: left;
-
-  // Estilos para los campos de Angular Material
-  --mdc-outlined-text-field-container-shape: 8px;
-  --mat-form-field-container-text-color: #fff;
-  --mdc-outlined-text-field-label-text-color: #b3b3b3;
-  --mdc-outlined-text-field-input-text-color: #fff;
-  --mdc-outlined-text-field-outline-color: rgba(255, 255, 255, 0.3);
-  --mdc-outlined-text-field-hover-outline-color: #fff;
 }
 
 .form-row {

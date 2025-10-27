@@ -1,12 +1,13 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-
+import { InquiryService } from '../../services/inquiry.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'ink-contact-form-section',
@@ -18,13 +19,17 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './contact-form-section.component.html',
   styleUrl: './contact-form-section.component.scss'
 })
 export class ContactFormSectionComponent {
   private fb = inject(FormBuilder);
+  private inquiryService = inject(InquiryService);
+
+  public isLoading = signal(false);
 
   public inquiryForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
@@ -51,15 +56,23 @@ export class ContactFormSectionComponent {
     }
   }
 
-  onSubmit(): void {
-    if (this.inquiryForm.valid) {
-      console.log('Formulario Enviado:', this.inquiryForm.value);
-      alert('¡Consulta enviada con éxito!');
+  async onSubmit(): Promise<void> {
+    if (this.inquiryForm.invalid) {
+      this.inquiryForm.markAllAsTouched();
+      return;
+    }
+
+    this.isLoading.set(true);
+    try {
+      await this.inquiryService.submitInquiry(this.inquiryForm);
+      alert('¡Consulta enviada con éxito! Nos pondremos en contacto contigo pronto.');
       this.inquiryForm.reset();
       this.fileName = null;
-    } else {
-      console.error('El formulario no es válido.');
-      this.inquiryForm.markAllAsTouched();
+    } catch (error) {
+      console.error('Error al enviar la consulta:', error);
+      alert('Hubo un error al enviar tu consulta. Por favor, inténtalo de nuevo.');
+    } finally {
+      this.isLoading.set(false);
     }
   }
 }
