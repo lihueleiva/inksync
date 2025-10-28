@@ -1,1 +1,50 @@
-<p>consultations works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Nuevas Consultas</mat-card-title>
+    <mat-card-subtitle>Consultas recibidas desde el formulario público</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+
+    @if (consultations$ | async; as consultations) {
+      <table mat-table [dataSource]="consultations" class="consultations-table">
+
+        <ng-container matColumnDef="createdAt">
+          <th mat-header-cell *matHeaderCellDef> Recibido </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.createdAt.seconds * 1000 | date: 'dd/MM/yyyy HH:mm' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef> Email </th>
+          <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Estado </th>
+          <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let element">
+            <button>Ver</button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    } @else {
+      <div class="spinner-container">
+        <mat-spinner></mat-spinner>
+      </div>
+    }
+
+  </mat-card-content>
+</mat-card>
