@@ -7,6 +7,8 @@ import { ConsultationService } from '../../services/consultation.service';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'ink-consultations',
@@ -15,7 +17,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     CommonModule,
     MatTableModule,
     MatCardModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    RouterLink
+
   ],
   templateUrl: './consultations.component.html',
   styleUrl: './consultations.component.scss'

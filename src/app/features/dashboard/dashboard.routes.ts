@@ -2,7 +2,13 @@ import { Routes } from '@angular/router';
 
 const dashboardRoutes: Routes = [
   {
-    path: 'consultations',
+    path: 'consultations/:id', // <-- RUTA DINÁMICA (NUEVA)
+    title: 'InkSync | Detalle de Consulta',
+    loadComponent: () =>
+      import('./pages/consultation-detail/consultation-detail.component').then(m => m.ConsultationDetailComponent),
+  },
+  {
+    path: 'consultations', // <-- RUTA DE LA LISTA (EXISTENTE)
     title: 'InkSync | Consultas',
     loadComponent: () =>
       import('./pages/consultations/consultations.component').then(m => m.ConsultationsComponent),

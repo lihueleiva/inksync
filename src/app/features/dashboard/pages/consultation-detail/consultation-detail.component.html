@@ -1,0 +1,53 @@
+@if (consultation$ | async; as consultation) {
+  <button mat-stroked-button routerLink="/dashboard/consultations" class="back-button">
+    <mat-icon>arrow_back</mat-icon>
+    Volver a la lista
+  </button>
+
+  <div class="detail-grid">
+    <mat-card class="detail-card">
+      <mat-card-header>
+        <mat-card-title>Cliente: {{ consultation.name }}</mat-card-title>
+        <mat-card-subtitle>Recibido: {{ consultation.createdAt.seconds * 1000 | date: 'fullDate' }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Email:</strong> {{ consultation.email }}</p>
+        <p><strong>Teléfono:</strong> {{ consultation.phone || 'No proporcionado' }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="detail-card">
+      <mat-card-header>
+        <mat-card-title>Estado de la Consulta</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field appearance="outline">
+          <mat-label>Actualizar Estado</mat-label>
+          <mat-select [value]="consultation.status" (valueChange)="onStatusChange($event)">
+            @for (status of statuses; track status) {
+              <mat-option [value]="status">{{ status }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="detail-card full-width">
+      <mat-card-header>
+        <mat-card-title>Detalles de la Idea</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Parte del Cuerpo:</strong> {{ consultation.bodyPart }}</p>
+        <p><strong>Tamaño Aprox:</strong> {{ consultation.size }} cm</p>
+        <p class="idea-text">
+          <strong>Descripción:</strong><br>
+          {{ consultation.idea }}
+        </p>
+        </mat-card-content>
+    </mat-card>
+  </div>
+} @else {
+  <div class="spinner-container">
+    <mat-spinner></mat-spinner>
+  </div>
+}

@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+}
+
+.back-button {
+  margin-bottom: 1.5rem;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.detail-card {
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.idea-text {
+  background-color: #f9f9f9;
+  border-left: 3px solid #673ab7;
+  padding: 1rem;
+  white-space: pre-wrap;
+}
