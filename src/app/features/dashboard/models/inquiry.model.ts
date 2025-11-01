@@ -6,6 +6,7 @@ export interface Inquiry {
   idea: string;
   bodyPart: string;
   size: string;
+  imageUrl?: string | null;
   createdAt: { seconds: number; nanoseconds: number; };
   status: 'Nueva' | 'En Revisión' | 'Cotizada' | 'Agendada' | 'Descartada';
 }

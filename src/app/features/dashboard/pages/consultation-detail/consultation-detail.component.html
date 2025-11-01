@@ -43,7 +43,19 @@
           <strong>Descripción:</strong><br>
           {{ consultation.idea }}
         </p>
-        </mat-card-content>
+
+        @if (consultation.imageUrl) {
+          <div class="reference-image-container">
+            <h4>Imagen de Referencia</h4>
+            <a [href]="consultation.imageUrl" target="_blank">
+              <img [src]="consultation.imageUrl" alt="Imagen de referencia">
+            </a>
+          </div>
+        } @else {
+          <p><em>El cliente no adjuntó una imagen de referencia.</em></p>
+        }
+
+      </mat-card-content>
     </mat-card>
   </div>
 } @else {

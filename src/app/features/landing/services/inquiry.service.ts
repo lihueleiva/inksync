@@ -1,24 +1,52 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 import { FormGroup } from '@angular/forms';
+import { Storage, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InquiryService {
   private firestore = inject(Firestore);
-
+  private storage = inject(Storage);
   private inquiriesCollection = collection(this.firestore, 'inquiries');
 
-  submitInquiry(inquiryData: FormGroup): Promise<any> {
-    const data = {
-      ...inquiryData.value,
+  async submitInquiry(inquiryForm: FormGroup): Promise<any> {
+    const formData = inquiryForm.value;
+    let imageUrl: string | null = null;
+
+    if (formData.referenceImages) {
+      imageUrl = await this.uploadReferenceImage(formData.referenceImages);
+    }
+
+    const dataToSave = {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      idea: formData.idea,
+      bodyPart: formData.bodyPart,
+      size: formData.size,
+      imageUrl: imageUrl,
       createdAt: new Date(),
       status: 'Nueva'
     };
 
-    delete data.referenceImages;
+    return addDoc(this.inquiriesCollection, dataToSave);
+  }
 
-    return addDoc(this.inquiriesCollection, data);
+  private async uploadReferenceImage(file: File): Promise<string> {
+    try {
+      const filePath = `references/${new Date().getTime()}_${file.name}`;
+      const storageRef = ref(this.storage, filePath);
+
+      const uploadResult = await uploadBytes(storageRef, file);
+
+      const downloadURL = await getDownloadURL(uploadResult.ref);
+
+      return downloadURL;
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
+      throw error;
+    }
   }
 }
