@@ -1,1 +1,37 @@
-<p>calendar works!</p>
+<div class="calendar-view-grid">
+  <mat-card class="calendar-card">
+    <mat-calendar
+      [selected]="selectedDate()"
+      (selectedChange)="onDateSelected($event)">
+    </mat-calendar>
+  </mat-card>
+
+  <mat-card class="appointments-card">
+    <mat-card-header>
+      <mat-card-title>Citas para el {{ selectedDate() | date: 'dd/MM/yyyy' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+      @if (appointmentsForSelectedDay().length > 0) {
+
+        <mat-list>
+          @for (appt of appointmentsForSelectedDay(); track appt.id) {
+            <mat-list-item>
+              <mat-icon matListItemIcon>schedule</mat-icon>
+              <div matListItemTitle>{{ appt.clientName }}</div>
+              <div matListItemLine>{{ appt.startTime }} - {{ appt.endTime }} | {{ appt.description }}</div>
+            </mat-list-item>
+          }
+        </mat-list>
+
+      } @else {
+
+        <div class="no-appointments">
+          <mat-icon>event_busy</mat-icon>
+          <p>No hay citas programadas para este día.</p>
+        </div>
+
+      }
+    </mat-card-content>
+  </mat-card>
+</div>
