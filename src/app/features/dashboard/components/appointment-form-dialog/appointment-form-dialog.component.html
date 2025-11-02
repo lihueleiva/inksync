@@ -1,0 +1,54 @@
+<h2 mat-dialog-title>Nueva Cita</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="appointmentForm" class="appointment-form">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre del Cliente</mat-label>
+      <input matInput formControlName="clientName" placeholder="Ej: Juan Pérez">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>ID del Cliente</mat-label>
+      <input matInput formControlName="clientId" placeholder="Ej: juanperez123">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date">
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <div class="time-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Hora Inicio</mat-label>
+        <input matInput formControlName="startTime" placeholder="Ej: 14:00" type="time">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Hora Fin</mat-label>
+        <input matInput formControlName="endTime" placeholder="Ej: 16:00" type="time">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="status">
+        @for (status of statuses; track status) {
+          <mat-option [value]="status">{{ status }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Descripción (Opcional)</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" [disabled]="appointmentForm.invalid" (click)="onSave()">Guardar Cita</button>
+</mat-dialog-actions>

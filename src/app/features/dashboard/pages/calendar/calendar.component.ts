@@ -9,6 +9,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AppointmentFormDialogComponent } from '../../components/appointment-form-dialog/appointment-form-dialog.component'; // <-- AÑADIR
 
 @Component({
   selector: 'ink-calendar',
@@ -19,23 +22,23 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     MatDatepickerModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule,
+    MatDialogModule
   ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss'
 })
 export class CalendarComponent {
   private appointmentService = inject(AppointmentService);
+  private dialog = inject(MatDialog); // <-- AÑADIR
 
   public selectedDate = signal<Date | null>(new Date());
-
   private selectedDate$ = toObservable(this.selectedDate);
 
   private appointments$: Observable<Appointment[]> = this.selectedDate$.pipe(
     switchMap(date => {
-      if (!date) {
-        return of([]);
-      }
+      if (!date) return of([]);
       return this.appointmentService.getAppointmentsByDate(date);
     })
   );
@@ -48,5 +51,15 @@ export class CalendarComponent {
     if (date) {
       this.selectedDate.set(date);
     }
+  }
+
+  openAddAppointmentDialog(): void {
+    const dialogRef = this.dialog.open(AppointmentFormDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Cita creada exitosamente');
+      }
+    });
   }
 }

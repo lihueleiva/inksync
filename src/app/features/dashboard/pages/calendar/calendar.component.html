@@ -1,6 +1,7 @@
 <div class="calendar-view-grid">
   <mat-card class="calendar-card">
     <mat-calendar
+      ngSkipHydration
       [selected]="selectedDate()"
       (selectedChange)="onDateSelected($event)">
     </mat-calendar>
@@ -9,6 +10,10 @@
   <mat-card class="appointments-card">
     <mat-card-header>
       <mat-card-title>Citas para el {{ selectedDate() | date: 'dd/MM/yyyy' }}</mat-card-title>
+      <button mat-flat-button color="primary" (click)="openAddAppointmentDialog()" class="add-appointment-btn">
+        <mat-icon>add</mat-icon>
+        Añadir Cita
+      </button>
     </mat-card-header>
     <mat-card-content>
 
