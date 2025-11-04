@@ -7,13 +7,15 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZonelessChangeDetection(), // <-- ¡ESTA ES LA LÍNEA CORRECTA PARA UNA APP SIN ZONE.JS!
+    provideZonelessChangeDetection(),
     provideRouter(routes),
     provideClientHydration(),
     provideAnimationsAsync(),
+    provideNativeDateAdapter(),
     provideFirebaseApp(() => initializeApp({
       projectId: "inksync-tatuajes",
       appId: "1:573339127867:web:3cf5b01c4ba81ef867cc1e",

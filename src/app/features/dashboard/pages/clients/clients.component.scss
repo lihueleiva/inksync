@@ -1,0 +1,29 @@
+:host {
+  display: block;
+}
+
+.clients-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.clients-table {
+  width: 100%;
+}
+
+.no-clients {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  color: #999;
+  text-align: center;
+}
+
+td.mat-mdc-cell:last-child {
+  button {
+    margin-right: 8px;
+  }
+}
