@@ -6,7 +6,7 @@ import { ClientService } from '../../services/client.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Client } from '../../models/client.model';
 
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,6 +35,9 @@ export class AppointmentFormDialogComponent {
   public dialogRef = inject(MatDialogRef<AppointmentFormDialogComponent>);
   private clientService = inject(ClientService);
 
+
+  public data: { client: Client, date: Date } | null = inject(MAT_DIALOG_DATA, { optional: true });
+
   public appointmentForm: FormGroup;
   public statuses: string[] = ['Confirmada', 'Pendiente', 'Cancelada'];
 
@@ -51,6 +54,14 @@ export class AppointmentFormDialogComponent {
       description: [''],
       status: ['Confirmada', Validators.required]
     });
+
+
+    if (this.data) {
+      this.appointmentForm.patchValue({
+        client: this.data.client,
+        date: this.data.date
+      });
+    }
   }
 
   async onSave(): Promise<void> {

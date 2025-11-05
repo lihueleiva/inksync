@@ -1,4 +1,4 @@
-@if (consultation$ | async; as consultation) {
+@if (consultation(); as consultation) {
   <button mat-stroked-button routerLink="/dashboard/consultations" class="back-button">
     <mat-icon>arrow_back</mat-icon>
     Volver a la lista
@@ -29,6 +29,13 @@
             }
           </mat-select>
         </mat-form-field>
+
+        @if (consultation.status !== 'Agendada') {
+          <button mat-flat-button color="primary" class="convert-button" (click)="convertToAppointment()">
+            <mat-icon>event</mat-icon>
+            Convertir en Cita
+          </button>
+        }
       </mat-card-content>
     </mat-card>
 
