@@ -4,6 +4,7 @@ import { TattooGalleryService } from '../../services/tattoo-gallery.service';
 import { Tattoo } from '../../models/tattoo.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 type CategoryFilter = 'Todos' | Tattoo['category'];
 
@@ -20,7 +21,9 @@ export class GallerySectionComponent {
   public categories = signal<CategoryFilter[]>(['Todos', 'Realismo', 'Tradicional', 'Blackwork', 'Color']);
   public activeFilter = signal<CategoryFilter>('Todos');
 
-  private allTattoos = this.galleryService.tattoos$;
+  private allTattoos$ = this.galleryService.getTattoos();
+
+  private allTattoos = toSignal(this.allTattoos$, { initialValue: [] });
 
   public filteredTattoos = computed(() => {
     const filter = this.activeFilter();
