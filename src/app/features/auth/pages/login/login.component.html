@@ -1,1 +1,50 @@
-<p>login works!</p>
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>InkSync</mat-card-title>
+      <mat-card-subtitle>Iniciar Sesión en tu Estudio</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="email">
+          <mat-icon matSuffix>email</mat-icon>
+
+          @if (loginForm.get('email')?.hasError('required')) {
+            <mat-error>El email es requerido.</mat-error>
+          }
+          @if (loginForm.get('email')?.hasError('email')) {
+            <mat-error>Email inválido.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput formControlName="password" type="password">
+          <mat-icon matSuffix>lock</mat-icon>
+
+          @if (loginForm.get('password')?.hasError('required')) {
+            <mat-error>La contraseña es requerida.</mat-error>
+          }
+        </mat-form-field>
+
+        @if (loginError()) {
+          <div class="login-error">
+            {{ loginError() }}
+          </div>
+        }
+
+        <button mat-flat-button color="primary" type="submit" [disabled]="loginForm.invalid || isLoading()">
+          @if (isLoading()) {
+            <mat-spinner [diameter]="24"></mat-spinner>
+          } @else {
+            <span>Ingresar</span>
+          }
+        </button>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

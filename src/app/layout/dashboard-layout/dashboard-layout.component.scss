@@ -39,3 +39,12 @@ mat-nav-list a {
 .content-wrapper {
   padding: 2rem;
 }
+
+.logout-button {
+  cursor: pointer;
+  color: #ff8a80;
+
+  &:hover {
+    background-color: rgba(255, 138, 128, 0.1);
+  }
+}
