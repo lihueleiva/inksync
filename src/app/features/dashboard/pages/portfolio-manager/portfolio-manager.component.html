@@ -1,1 +1,71 @@
-<p>portfolio-manager works!</p>
+<div class="manager-grid">
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>Subir Nuevo Trabajo</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="portfolioForm" (ngSubmit)="onSubmit()" class="upload-form">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Categoría</mat-label>
+          <mat-select formControlName="category" required>
+            @for (cat of categories; track cat) {
+              <mat-option [value]="cat">{{ cat }}</mat-option>
+            }
+          </mat-select>
+          <mat-error>La categoría es requerida.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Descripción (Opcional)</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+
+        <div class="file-input-container">
+          <button mat-stroked-button type="button" (click)="fileInput.click()">
+            <mat-icon>attach_file</mat-icon>
+            Seleccionar Imagen
+          </button>
+          <input hidden type="file" #fileInput (change)="onFileSelected($event)" accept="image/*">
+          @if (fileName()) {
+            <span class="file-name">{{ fileName() }}</span>
+          }
+        </div>
+
+        <button mat-flat-button color="primary" type="submit" [disabled]="portfolioForm.invalid || isLoading()">
+          @if (isLoading()) {
+            <mat-spinner [diameter]="24"></mat-spinner>
+          } @else {
+            <span>Subir Trabajo</span>
+          }
+        </button>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="gallery-card">
+    <mat-card-header>
+      <mat-card-title>Mi Portafolio Actual</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @if (portfolioItems().length > 0) {
+        <div class="portfolio-grid">
+          @for (item of portfolioItems(); track item.id) {
+            <div class="item-card">
+              <img [src]="item.imageUrl" [alt]="item.description || 'Tatuaje'">
+              <span class="item-category">{{ item.category }}</span>
+              <button mat-icon-button color="warn" class="delete-btn" (click)="onDelete(item)">
+                <mat-icon>delete_forever</mat-icon>
+              </button>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="no-items">
+          <p>Aún no has subido ningún trabajo a tu portafolio.</p>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>
