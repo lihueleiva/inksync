@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp({
       projectId: "inksync-tatuajes",
       appId: "1:573339127867:web:3cf5b01c4ba81ef867cc1e",
-      storageBucket: "inksync-tatuajes.appspot.com",
+      storageBucket: "inksync-tatuajes.firebasestorage.app",
       apiKey: "AIzaSyD99vY094V3XhFFHJk_zLtD-nNENmHmXno",
       authDomain: "inksync-tatuajes.firebaseapp.com",
       messagingSenderId: "573339127867"
