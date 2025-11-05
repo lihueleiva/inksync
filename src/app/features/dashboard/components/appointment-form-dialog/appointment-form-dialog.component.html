@@ -4,13 +4,15 @@
   <form [formGroup]="appointmentForm" class="appointment-form">
 
     <mat-form-field appearance="outline">
-      <mat-label>Nombre del Cliente</mat-label>
-      <input matInput formControlName="clientName" placeholder="Ej: Juan Pérez">
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>ID del Cliente</mat-label>
-      <input matInput formControlName="clientId" placeholder="Ej: juanperez123">
+      <mat-label>Seleccionar Cliente</mat-label>
+      <mat-select formControlName="client" required>
+        @for (client of clients(); track client.id) {
+          <mat-option [value]="client">
+            {{ client.firstName }} {{ client.lastName }}
+          </mat-option>
+        }
+      </mat-select>
+      <mat-error>Debes seleccionar un cliente.</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
