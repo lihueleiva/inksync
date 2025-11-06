@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, computed } from '@angular/core';
 import {
   Firestore,
   collection,
@@ -16,8 +16,9 @@ import {
   getDownloadURL,
   deleteObject
 } from '@angular/fire/storage';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { PortfolioItem } from '../models/portfolio-item.model';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,14 +26,22 @@ import { PortfolioItem } from '../models/portfolio-item.model';
 export class PortfolioService {
   private firestore = inject(Firestore);
   private storage = inject(Storage);
-  private portfolioCollection = collection(this.firestore, 'portfolio');
+  private authService = inject(AuthService);
 
+  private userUid = computed(() => this.authService.currentUser()?.uid);
 
-  getPortfolioItems(): Observable<PortfolioItem[]> {
-    const itemsQuery = query(this.portfolioCollection, orderBy('createdAt', 'desc'));
-    return collectionData(itemsQuery, { idField: 'id' }) as Observable<PortfolioItem[]>;
+  private getPortfolioCollection() {
+    const uid = this.userUid();
+    if (!uid) throw new Error('Usuario no autenticado');
+    return collection(this.firestore, `artists/${uid}/portfolio`);
   }
 
+  getPortfolioItems(): Observable<PortfolioItem[]> {
+    const uid = this.userUid();
+    if (!uid) return of([]);
+    const itemsQuery = query(this.getPortfolioCollection(), orderBy('createdAt', 'desc'));
+    return collectionData(itemsQuery, { idField: 'id' }) as Observable<PortfolioItem[]>;
+  }
 
   async addPortfolioItem(
     file: File,
@@ -40,9 +49,7 @@ export class PortfolioService {
     description: string
   ): Promise<void> {
 
-
     const { imageUrl, storagePath } = await this.uploadPortfolioImage(file);
-
 
     const dataToSave = {
       imageUrl,
@@ -52,14 +59,12 @@ export class PortfolioService {
       createdAt: new Date()
     };
 
-    await addDoc(this.portfolioCollection, dataToSave);
+    await addDoc(this.getPortfolioCollection(), dataToSave);
   }
 
   async deletePortfolioItem(item: PortfolioItem): Promise<void> {
-
     const storageRef = ref(this.storage, item.storagePath);
-
-    const docRef = doc(this.firestore, 'portfolio', item.id);
+    const docRef = doc(this.getPortfolioCollection(), item.id);
 
     await Promise.all([
       deleteObject(storageRef),
@@ -68,8 +73,10 @@ export class PortfolioService {
   }
 
   private async uploadPortfolioImage(file: File): Promise<{ imageUrl: string, storagePath: string }> {
+    const uid = this.userUid();
+    if (!uid) throw new Error('Usuario no autenticado');
     try {
-      const filePath = `portfolio/${new Date().getTime()}_${file.name}`;
+      const filePath = `artists/${uid}/portfolio/${new Date().getTime()}_${file.name}`;
       const storageRef = ref(this.storage, filePath);
 
       const uploadResult = await uploadBytes(storageRef, file);

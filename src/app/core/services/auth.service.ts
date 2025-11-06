@@ -8,6 +8,7 @@ import {
   User
 } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +17,9 @@ export class AuthService {
   private auth: Auth = inject(Auth);
   private router: Router = inject(Router);
 
-
   public readonly authState$: Observable<User | null> = authState(this.auth);
 
+  public readonly currentUser = toSignal(this.authState$);
 
   login(email: string, password: string): Promise<any> {
     return signInWithEmailAndPassword(this.auth, email, password);
@@ -32,5 +33,4 @@ export class AuthService {
       console.error('Error al cerrar sesión:', error);
     }
   }
-
 }
